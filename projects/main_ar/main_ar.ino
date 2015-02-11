@@ -1,4 +1,6 @@
 #include "LedChannel.h"
+#include "MonoLed.h"
+#include "RgbLed.h"
 
 LedChannel ledChannelMono1(9);
 LedChannel ledChannelMono2(10);
@@ -7,6 +9,12 @@ LedChannel ledChannelMono3(11);
 LedChannel ledChannelRgb1R(3);
 LedChannel ledChannelRgb1G(5);
 LedChannel ledChannelRgb1B(6);
+
+MonoLed monoLed1(ledChannelMono1);
+MonoLed monoLed2(ledChannelMono2);
+MonoLed monoLed3(ledChannelMono3);
+
+RgbLed rgbLed1(ledChannelRgb1R, ledChannelRgb1G, ledChannelRgb1B);
 
 void setup() {
   ledChannelMono1.init();
@@ -22,12 +30,10 @@ int f2 = 0;
 int f3 = 0;
 
 void loop() {
-  ledChannelMono1.setIntencity(func(f1));
-  ledChannelMono2.setIntencity(func(f2));
-  ledChannelMono3.setIntencity(func(f3));
-  ledChannelRgb1R.setIntencity(func(f1));
-  ledChannelRgb1G.setIntencity(func(f2));
-  ledChannelRgb1B.setIntencity(func(f3));
+  monoLed1.setColor(func(f1));
+  monoLed2.setColor(func(f2));
+  monoLed3.setColor(func(f3));
+  rgbLed1.setColor(func(f1), func(f2), func(f3));
   
   f1 = (f1 + 1) % 512;
   f2 = (f2 + 3) % 512;

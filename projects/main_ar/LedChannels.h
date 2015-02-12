@@ -8,7 +8,7 @@ private:
   LedChannel **_channels;
 
 public:
-  LedChannels(int numPwmOutputs, int pwmOutputs[]);
+  LedChannels(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]);
   
   void init();
   

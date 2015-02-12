@@ -3,9 +3,10 @@
 class LedChannel {
 private:
   int _output;
+  bool _isPwm;
   
 public:
-  LedChannel(int output);
+  LedChannel(int output, bool isPwm);
   
   void init();
   

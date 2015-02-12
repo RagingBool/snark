@@ -14,9 +14,9 @@ void setup() {
 }
 
 int f1 = 0;
-int f2 = 0;
-int f3 = 0;
-int f4 = 0;
+int f2 = 10;
+int f3 = 20;
+int f4 = 30;
 
 void loop() {
   leds.setRgbColor(0, func(f1), func(f2), func(f3));

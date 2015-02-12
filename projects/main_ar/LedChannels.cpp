@@ -1,6 +1,6 @@
 #include "LedChannels.h"
 
-LedChannels::LedChannels(int pwmOutputs[], int numPwmOutputs) {
+LedChannels::LedChannels(int numPwmOutputs, int pwmOutputs[]) {
   _numChannels = numPwmOutputs;
   
   _channels = new LedChannel*[_numChannels];

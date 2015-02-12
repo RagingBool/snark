@@ -1,9 +1,9 @@
 #include "LedChannels.h"
 #include "SnarkLeds.h"
 
-int pwmChannels[] = {3, 5, 6, 9, 10, 11};
 int numPwmChannels = 6;
-LedChannels ledChannels(pwmChannels, numPwmChannels);
+int pwmChannels[] = {3, 5, 6, 9, 10, 11};
+LedChannels ledChannels(numPwmChannels, pwmChannels);
 
 SnarkLeds leds(ledChannels, 1, 3);
 

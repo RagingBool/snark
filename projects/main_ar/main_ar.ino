@@ -1,28 +1,21 @@
 #include "LedChannel.h"
+#include "LedChannels.h"
 #include "MonoLed.h"
 #include "RgbLed.h"
 
-LedChannel ledChannelMono1(9);
-LedChannel ledChannelMono2(10);
-LedChannel ledChannelMono3(11);
+int pwmChannels[] = {3, 5, 6, 9, 10, 11};
+int numPwmChannels = 6;
 
-LedChannel ledChannelRgb1R(3);
-LedChannel ledChannelRgb1G(5);
-LedChannel ledChannelRgb1B(6);
+LedChannels ledChannels(pwmChannels, numPwmChannels);
 
-MonoLed monoLed1(ledChannelMono1);
-MonoLed monoLed2(ledChannelMono2);
-MonoLed monoLed3(ledChannelMono3);
+RgbLed rgbLed1(ledChannels[0], ledChannels[1], ledChannels[2]);
 
-RgbLed rgbLed1(ledChannelRgb1R, ledChannelRgb1G, ledChannelRgb1B);
+MonoLed monoLed1(ledChannels[3]);
+MonoLed monoLed2(ledChannels[4]);
+MonoLed monoLed3(ledChannels[5]);
 
 void setup() {
-  ledChannelMono1.init();
-  ledChannelMono2.init();
-  ledChannelMono3.init();
-  ledChannelRgb1R.init();
-  ledChannelRgb1G.init();
-  ledChannelRgb1B.init();
+  ledChannels.init();
 }
 
 int f1 = 0;

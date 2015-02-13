@@ -14,5 +14,7 @@ public:
   
   void init();
   
-  void setValue(int intencity);
+  void setValue(bool value) { setValue(value ? 0xFF : 0); }
+  
+  void setValue(int value);
 };

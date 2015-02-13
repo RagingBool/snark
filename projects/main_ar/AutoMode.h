@@ -11,6 +11,8 @@ private:
   int _maxAutoLeds;
   int _numAutoLeds;
   AutoMode::AutoLed** _pAutoLeds;
+  
+  unsigned long _lastUpdateTime;
 
 public:
   AutoMode(LedManager& ledManager);
@@ -23,6 +25,9 @@ protected:
   void addAutoLed(AutoLed* pAutoLed);
   
 private:
+  void setupModes();
+  
+private:
   class AutoLed {
   private:
     LedManager& _ledManager;
@@ -32,7 +37,7 @@ private:
     
     virtual ~AutoLed() { }
     
-    virtual void update() = 0;
+    virtual void update(int dt) = 0;
       
   protected:
     LedManager& getLedManager() { return _ledManager; }
@@ -54,10 +59,12 @@ private:
     int _step;
     int _phase;
     
+    int _timeSinceUpdate;
+    
   public:
     FadingLed(LedManager& ledManager, int ledId, int step, int startingPhase = 0):
-      AutoMonoLed(ledManager, ledId), _step(step), _phase(startingPhase) { }
+      AutoMonoLed(ledManager, ledId), _step(step), _phase(startingPhase), _timeSinceUpdate(0) { }
     
-    virtual void update();
+    virtual void update(int dt);
   };
 };

@@ -5,12 +5,12 @@
 class Outputs {
 private:
   int _numOutputs;
-  Output **_outputs;
+  Output **_pOutputs;
 
 public:
   Outputs(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]);
   
   void init();
   
-  Output& operator[](int id) { return *_outputs[id]; }
+  Output& operator[](int id) { return *_pOutputs[id]; }
 };

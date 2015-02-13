@@ -14,6 +14,16 @@ Outputs::Outputs(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int
   }
 }
 
+Outputs::~Outputs() {
+  for (int i = 0; i < _numOutputs; i++) {
+    delete _pOutputs[i];
+    _pOutputs[i] = 0;
+  }
+  
+  delete[] _pOutputs;
+  _pOutputs = 0;
+}
+
 void Outputs::init() {
   for (int i = 0; i < _numOutputs; i++) {
     _pOutputs[i] -> init();

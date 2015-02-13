@@ -10,7 +10,11 @@ private:
 public:
   Outputs(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]);
   
+  ~Outputs();
+  
   void init();
   
-  Output& operator[](int id) { return *_pOutputs[id]; }
+  int getNumOutputs() const { return _numOutputs; }
+  
+  Output& operator[](int id) const { return *_pOutputs[id]; }
 };

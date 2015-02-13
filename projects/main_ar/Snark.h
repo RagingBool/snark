@@ -17,6 +17,7 @@ private:
   
 public:
   Snark();
+  ~Snark();
   
   void init();
   

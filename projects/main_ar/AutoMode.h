@@ -8,6 +8,7 @@ class AutoMode {
 private:
   LedManager& _ledManager;
   
+  int _maxAutoLeds;
   int _numAutoLeds;
   AutoMode::AutoLed** _pAutoLeds;
 
@@ -17,6 +18,9 @@ public:
   ~AutoMode();
   
   void update();
+
+protected:
+  void addAutoLed(AutoLed* pAutoLed);
   
 private:
   class AutoLed {

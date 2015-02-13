@@ -3,12 +3,26 @@
 AutoMode::AutoMode(LedManager& ledManager):
   _ledManager(ledManager) {
   
-  _numAutoLeds = ledManager.getNumChannels();
+  _maxAutoLeds = ledManager.getNumChannels();
+  _pAutoLeds = new AutoLed*[_maxAutoLeds];
   
-  _pAutoLeds = new AutoLed*[_numAutoLeds];
-  for (int i = 0; i < _numAutoLeds; i++) {
-    _pAutoLeds[i] = new FadingLed(ledManager, i, i + 2, i * 11);
-  }
+  _numAutoLeds = 0;
+  
+  // mono LEDs
+  addAutoLed(new FadingLed(ledManager, 0, 2, 17));
+  addAutoLed(new FadingLed(ledManager, 1, 3, 17 * 2));
+  addAutoLed(new FadingLed(ledManager, 2, 5, 17 * 3));
+  addAutoLed(new FadingLed(ledManager, 8, 4, 17 * 4));
+  addAutoLed(new FadingLed(ledManager, 7, 7, 17 * 5));
+  addAutoLed(new FadingLed(ledManager, 6, 8, 17 * 6));
+  
+  // RGB LEDs
+  addAutoLed(new FadingLed(ledManager, 3, 2, 17));
+  addAutoLed(new FadingLed(ledManager, 4, 3, 17 * 2));
+  addAutoLed(new FadingLed(ledManager, 5, 5, 17 * 3));
+  addAutoLed(new FadingLed(ledManager, 9, 4, 17 * 4));
+  addAutoLed(new FadingLed(ledManager, 10, 1, 17 * 5));
+  addAutoLed(new FadingLed(ledManager, 11, 3, 17 * 6));
 }
 
 AutoMode::~AutoMode() {
@@ -19,6 +33,13 @@ AutoMode::~AutoMode() {
   
   delete[] _pAutoLeds;
   _pAutoLeds = 0;
+}
+
+void AutoMode::addAutoLed(AutoLed* pAutoLed) {
+  int nextLed = _numAutoLeds;
+  
+  _pAutoLeds[nextLed] = pAutoLed;
+  _numAutoLeds = nextLed + 1;
 }
   
 void AutoMode::update() {

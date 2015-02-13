@@ -1,6 +1,6 @@
-#include "OutputManager.h"
+#include "Outputs.h"
 
-OutputManager::OutputManager(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]) {
+Outputs::Outputs(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]) {
   _numOutputs = numPwmOutputs + numDigitalOutputs;
 
   _outputs = new Output*[_numOutputs];
@@ -14,7 +14,7 @@ OutputManager::OutputManager(int numPwmOutputs, int pwmOutputs[], int numDigital
   }
 }
 
-void OutputManager::init() {
+void Outputs::init() {
   for (int i = 0; i < _numOutputs; i++) {
     _outputs[i] -> init();
   }

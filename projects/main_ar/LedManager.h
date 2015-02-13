@@ -1,13 +1,13 @@
 #pragma once
 
-#include "OutputManager.h"
+#include "Outputs.h"
 
 class LedManager {
 private:
-  OutputManager& _outputManager;
+  Outputs& _outputs;
 
 public:
-  LedManager(OutputManager& outputManager);
+  LedManager(Outputs& outputs);
   
   void setValue(int id, int value);
 };

@@ -2,13 +2,13 @@
 
 #include "Output.h"
 
-class OutputManager {
+class Outputs {
 private:
   int _numOutputs;
   Output **_outputs;
 
 public:
-  OutputManager(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]);
+  Outputs(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]);
   
   void init();
   

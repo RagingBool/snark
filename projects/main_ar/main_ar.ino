@@ -1,16 +1,16 @@
-#include "OutputManager.h"
+#include "Outputs.h"
 #include "LedManager.h"
 
 int numPwmChannels = 6;
 int pwmChannels[] = {3, 5, 6, 9, 10, 11};
 int numDigitalChannels = 6;
 int digitalChannels[] = {2, 4, 7, 8, 12, 13};
-OutputManager outputManager(numPwmChannels, pwmChannels, numDigitalChannels, digitalChannels);
+Outputs outputs(numPwmChannels, pwmChannels, numDigitalChannels, digitalChannels);
 
-LedManager leds(outputManager);
+LedManager leds(outputs);
 
 void setup() {
-  outputManager.init();
+  outputs.init();
 }
 
 int f1 = 0;

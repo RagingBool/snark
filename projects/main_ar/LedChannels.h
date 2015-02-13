@@ -1,16 +1,16 @@
 #pragma once
 
-#include "LedChannel.h"
+#include "Output.h"
 
 class LedChannels {
 private:
-  int _numChannels;
-  LedChannel **_channels;
+  int _numOutputs;
+  Output **_outputs;
 
 public:
   LedChannels(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]);
   
   void init();
   
-  LedChannel& operator[](int id) { return *_channels[id]; }
+  Output& operator[](int id) { return *_outputs[id]; }
 };

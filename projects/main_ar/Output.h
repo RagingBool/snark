@@ -1,12 +1,12 @@
 #pragma once
 
-class LedChannel {
+class Output {
 private:
   int _output;
   bool _isPwm;
   
 public:
-  LedChannel(int output, bool isPwm);
+  Output(int output, bool isPwm);
   
   void init();
   

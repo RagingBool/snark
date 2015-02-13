@@ -1,16 +1,16 @@
 #include "Arduino.h"
 
-#include "LedChannel.h"
+#include "Output.h"
 
-LedChannel::LedChannel(int output, bool isPwm):
+Output::Output(int output, bool isPwm):
   _output(output),
   _isPwm(isPwm) { }
 
-void LedChannel::init() {
+void Output::init() {
   pinMode(_output, OUTPUT);
 }
 
-void LedChannel::setIntencity(int intencity) {
+void Output::setIntencity(int intencity) {
   if(_isPwm) {
     analogWrite(_output, intencity);
   }

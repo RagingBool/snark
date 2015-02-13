@@ -2,12 +2,12 @@
 
 #include "OutputManager.h"
 
-class SnarkLeds {
+class LedManager {
 private:
   OutputManager& _outputManager;
 
 public:
-  SnarkLeds(OutputManager& outputManager);
+  LedManager(OutputManager& outputManager);
   
   void setValue(int id, int value);
 };

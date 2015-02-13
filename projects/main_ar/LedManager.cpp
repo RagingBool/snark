@@ -1,6 +1,6 @@
 #include "Arduino.h"
 
-#include "SnarkLeds.h"
+#include "LedManager.h"
 
 const uint8_t PROGMEM gammaCorrection[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -20,9 +20,9 @@ const uint8_t PROGMEM gammaCorrection[] = {
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 };
 
-SnarkLeds::SnarkLeds(OutputManager& outputManager):
+LedManager::LedManager(OutputManager& outputManager):
   _outputManager(outputManager) { }
 
-void SnarkLeds::setValue(int id, int value) {
+void LedManager::setValue(int id, int value) {
   _outputManager[id].setIntencity(pgm_read_byte(&gammaCorrection[value]));
 }

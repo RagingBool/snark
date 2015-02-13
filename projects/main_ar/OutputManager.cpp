@@ -1,6 +1,6 @@
-#include "LedChannels.h"
+#include "OutputManager.h"
 
-LedChannels::LedChannels(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]) {
+OutputManager::OutputManager(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]) {
   _numOutputs = numPwmOutputs + numDigitalOutputs;
 
   _outputs = new Output*[_numOutputs];
@@ -14,7 +14,7 @@ LedChannels::LedChannels(int numPwmOutputs, int pwmOutputs[], int numDigitalOutp
   }
 }
 
-void LedChannels::init() {
+void OutputManager::init() {
   for (int i = 0; i < _numOutputs; i++) {
     _outputs[i] -> init();
   }

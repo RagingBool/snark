@@ -1,13 +1,13 @@
 #pragma once
 
-#include "LedChannels.h"
+#include "OutputManager.h"
 
 class SnarkLeds {
 private:
-  LedChannels& _channels;
+  OutputManager& _outputManager;
 
 public:
-  SnarkLeds(LedChannels& channels);
+  SnarkLeds(OutputManager& outputManager);
   
   void setValue(int id, int value);
 };

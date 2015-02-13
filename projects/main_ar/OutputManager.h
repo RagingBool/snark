@@ -2,13 +2,13 @@
 
 #include "Output.h"
 
-class LedChannels {
+class OutputManager {
 private:
   int _numOutputs;
   Output **_outputs;
 
 public:
-  LedChannels(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]);
+  OutputManager(int numPwmOutputs, int pwmOutputs[], int numDigitalOutputs, int digitalOutputs[]);
   
   void init();
   

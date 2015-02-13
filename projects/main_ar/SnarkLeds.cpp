@@ -20,30 +20,9 @@ const uint8_t PROGMEM gammaCorrection[] = {
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 };
 
-SnarkLeds::SnarkLeds(LedChannels& channels, int numRgbLeds, int numMonoLeds):
-  _numRgbLeds(numRgbLeds),
-  _numMonoLeds(numMonoLeds) {
+SnarkLeds::SnarkLeds(LedChannels& channels):
+  _channels(channels) { }
 
-  _rgbLeds = new RgbLed*[_numRgbLeds];
-  _monoLeds = new MonoLed*[_numMonoLeds];
-  
-  int curChannelId = 0;
-  
-  for(int i = 0; i < _numRgbLeds; i++) {
-    _rgbLeds[i] = new RgbLed(channels[curChannelId], channels[curChannelId + 1], channels[curChannelId + 2]);
-    curChannelId += 3;
-  }
-    
-  for(int i = 0; i < _numMonoLeds; i++) {
-    _monoLeds[i] = new MonoLed(channels[curChannelId]);
-    curChannelId++;
-  }
-}
-  
-void SnarkLeds::setRgbColor(int id, int r, int g, int b) {
-  _rgbLeds[id] -> setColor(pgm_read_byte(&gammaCorrection[r]), pgm_read_byte(&gammaCorrection[g]), pgm_read_byte(&gammaCorrection[b]));
-}
-
-void SnarkLeds::setMonoColor(int id, int color) {
-  _monoLeds[id] -> setColor(pgm_read_byte(&gammaCorrection[color]));
+void SnarkLeds::setValue(int id, int value) {
+  _channels[id].setIntencity(pgm_read_byte(&gammaCorrection[value]));
 }

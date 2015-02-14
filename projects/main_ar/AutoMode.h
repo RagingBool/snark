@@ -70,10 +70,10 @@ private:
   
   class FadingLed: public AutoMonoLed {
   private:
-    PhaseGenerator _phaseGenerator;
+    Lfo _lfo;
     
   public:
-    FadingLed(LedManager& ledManager, int ledId, int period, int startingPhase = 0);
+    FadingLed(LedManager& ledManager, int ledId, int period, int initialPhase = 0);
     
     virtual void updateInner(int dt);
   };

@@ -29,14 +29,27 @@ private:
 };
 
 class Lfo {
+public:
+  enum LfoFunction {
+    SAW_UP,
+    SAW_DOWN,
+    TRIANGLE,
+    SQUARE,
+    SIN_WAVE,
+  };
+
 private:
   PhaseGenerator _phaseGenerator;
+  LfoFunction _lfoFunction;
+  uint8_t _initialPhase;
   uint16_t _frequency;
   uint8_t _value;
-  uint8_t _initialPhase;
   
 public:
-  Lfo(): _phaseGenerator(9), _value(0) { setFrequency(1); }
+  Lfo(): _phaseGenerator(9), _value(0) { setLfoFunction(SAW_UP); setFrequency(1); setInitialPhase(0); }
+  
+  void setLfoFunction(LfoFunction lfoFunction) { _lfoFunction = lfoFunction; }
+  LfoFunction getLfoFunction() const { return _lfoFunction; }
   
   uint16_t getFrequency() const { return _phaseGenerator.getFrequency(); }
   void setFrequency(uint16_t frequency) { _phaseGenerator.setFrequency(frequency); }

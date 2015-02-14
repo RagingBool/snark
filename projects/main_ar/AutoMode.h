@@ -73,7 +73,7 @@ private:
     Lfo _lfo;
     
   public:
-    FadingLed(LedManager& ledManager, int ledId, int period, int initialPhase = 0);
+    FadingLed(LedManager& ledManager, int ledId, Lfo::LfoFunction lfoFunction, int period, int initialPhase = 0);
     
     virtual void updateInner(int dt);
   };

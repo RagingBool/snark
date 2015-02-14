@@ -17,20 +17,20 @@ AutoMode::AutoMode(LedManager& ledManager):
 
 void AutoMode::setupModes() {
   // mono LEDs
-  addAutoLed(new FadingLed(_ledManager, 0, 1000, 7 * 1));
-  addAutoLed(new FadingLed(_ledManager, 1, 500, 7 * 2));
-  addAutoLed(new FadingLed(_ledManager, 2, 3000, 7 * 3));
-  addAutoLed(new FadingLed(_ledManager, 8, 400, 7 * 4));
-  addAutoLed(new FadingLed(_ledManager, 7, 700, 7 * 5));
-  addAutoLed(new FadingLed(_ledManager, 6, 800, 7 * 6));
+  addAutoLed(new FadingLed(_ledManager, 0, Lfo::SIN_WAVE, 1000, 7 * 1));
+  addAutoLed(new FadingLed(_ledManager, 1, Lfo::TRIANGLE, 500, 7 * 2));
+  addAutoLed(new FadingLed(_ledManager, 2, Lfo::SAW_DOWN, 2000, 7 * 3));
+  addAutoLed(new FadingLed(_ledManager, 8, Lfo::SQUARE, 700, 64));
+  addAutoLed(new FadingLed(_ledManager, 7, Lfo::SQUARE, 700, 128));
+  addAutoLed(new FadingLed(_ledManager, 6, Lfo::SQUARE, 700, 192));
 
   // RGB LEDs
-  addAutoLed(new FadingLed(_ledManager, 3, 8000, 7 * 1));
-  addAutoLed(new FadingLed(_ledManager, 4, 3000, 7 * 2));
-  addAutoLed(new FadingLed(_ledManager, 5, 5000, 7 * 3));
-  addAutoLed(new FadingLed(_ledManager, 9, 4000, 7 * 4));
-  addAutoLed(new FadingLed(_ledManager, 10, 6000, 7 * 5));
-  addAutoLed(new FadingLed(_ledManager, 11, 3000, 7 * 6));
+  addAutoLed(new FadingLed(_ledManager, 3, Lfo::SIN_WAVE, 8000, 7 * 1));
+  addAutoLed(new FadingLed(_ledManager, 4, Lfo::SIN_WAVE, 3000, 7 * 2));
+  addAutoLed(new FadingLed(_ledManager, 5, Lfo::SIN_WAVE, 5000, 7 * 3));
+  addAutoLed(new FadingLed(_ledManager, 9, Lfo::SQUARE, 2000, 0));
+  addAutoLed(new FadingLed(_ledManager, 10, Lfo::SQUARE, 4000, 0));
+  addAutoLed(new FadingLed(_ledManager, 11, Lfo::SQUARE, 8000, 0));
 }
 
 AutoMode::~AutoMode() {
@@ -86,11 +86,12 @@ void AutoMode::AutoLed::update(int dt) {
 
 // class FadingLed
 
-AutoMode::FadingLed::FadingLed(LedManager& ledManager, int ledId, int period, int initialPhase):
+AutoMode::FadingLed::FadingLed(LedManager& ledManager, int ledId, Lfo::LfoFunction lfoFunction, int period, int initialPhase):
   AutoMonoLed(ledManager, ledId) {
   
   setUpdateThresholdMillis(10);
   
+  _lfo.setLfoFunction(lfoFunction);
   _lfo.setFrequency(periodToFrequency(period));
   _lfo.setInitialPhase(initialPhase);
   _lfo.reset();

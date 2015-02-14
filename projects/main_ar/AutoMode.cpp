@@ -17,20 +17,20 @@ AutoMode::AutoMode(LedManager& ledManager):
 
 void AutoMode::setupModes() {
   // mono LEDs
-  addAutoLed(new FadingLed(_ledManager, 0, 2, 17));
-  addAutoLed(new FadingLed(_ledManager, 1, 3, 17 * 2));
-  addAutoLed(new FadingLed(_ledManager, 2, 5, 17 * 3));
-  addAutoLed(new FadingLed(_ledManager, 8, 4, 17 * 4));
-  addAutoLed(new FadingLed(_ledManager, 7, 7, 17 * 5));
-  addAutoLed(new FadingLed(_ledManager, 6, 8, 17 * 6));
-  
+  addAutoLed(new FadingLed(_ledManager, 0, 1000, 17 * 1));
+  addAutoLed(new FadingLed(_ledManager, 1, 500, 17 * 2));
+  addAutoLed(new FadingLed(_ledManager, 2, 3000, 17 * 3));
+  addAutoLed(new FadingLed(_ledManager, 8, 400, 17 * 4));
+  addAutoLed(new FadingLed(_ledManager, 7, 700, 17 * 5));
+  addAutoLed(new FadingLed(_ledManager, 6, 800, 17 * 6));
+
   // RGB LEDs
-  addAutoLed(new FadingLed(_ledManager, 3, 2, 17));
-  addAutoLed(new FadingLed(_ledManager, 4, 3, 17 * 2));
-  addAutoLed(new FadingLed(_ledManager, 5, 5, 17 * 3));
-  addAutoLed(new FadingLed(_ledManager, 9, 4, 17 * 4));
-  addAutoLed(new FadingLed(_ledManager, 10, 1, 17 * 5));
-  addAutoLed(new FadingLed(_ledManager, 11, 3, 17 * 6));
+  addAutoLed(new FadingLed(_ledManager, 3, 8000, 17));
+  addAutoLed(new FadingLed(_ledManager, 4, 3000, 17 * 2));
+  addAutoLed(new FadingLed(_ledManager, 5, 5000, 17 * 3));
+  addAutoLed(new FadingLed(_ledManager, 9, 4000, 17 * 4));
+  addAutoLed(new FadingLed(_ledManager, 10, 6000, 17 * 5));
+  addAutoLed(new FadingLed(_ledManager, 11, 3000, 17 * 6));
 }
 
 AutoMode::~AutoMode() {
@@ -53,30 +53,50 @@ void AutoMode::addAutoLed(AutoLed* pAutoLed) {
 void AutoMode::update() {
   unsigned long time = millis();
 
-  if(_lastUpdateTime == 0) {
+  if (_lastUpdateTime == 0) {
     _lastUpdateTime = time;
     return;
   }
-  
-  if(time == _lastUpdateTime) {
+
+  if (time == _lastUpdateTime) {
     return;
   }
-  
+
   int dt = (int)(time - _lastUpdateTime);
-  
   for (int i = 0; i < _numAutoLeds; i++) {
     _pAutoLeds[i] -> update(dt);
   }
+
+  _lastUpdateTime = time;
+}
+
+// class AutoLed
+
+void AutoMode::AutoLed::update(int dt) {
+  int updateThresholdMillis = _updateThresholdMillis;
+  int timeSinceUpdate = _timeSinceUpdate + dt;
+
+  if (timeSinceUpdate >= updateThresholdMillis) {
+    updateInner(timeSinceUpdate);
+    timeSinceUpdate = 0;
+  }
+  
+  _timeSinceUpdate = timeSinceUpdate;
 }
 
 // class FadingLed
 
-void AutoMode::FadingLed::update(int dt) {
-  int phase = _phase;
+AutoMode::FadingLed::FadingLed(LedManager& ledManager, int ledId, int period, int startingPhase):
+  AutoMonoLed(ledManager, ledId), _phaseGenerator(9) {
   
-  int value = (phase < 256) ? phase : 511 - phase;
-  
-  setValue(value);
-  
-  _phase = (phase + _step) % 512;
+  setUpdateThresholdMillis(10);
+  _phaseGenerator.setPhase(startingPhase);
+  _phaseGenerator.setPeriodMillis(period);
+}
+
+void AutoMode::FadingLed::updateInner(int dt) {
+  _phaseGenerator.update(dt);
+
+  unsigned int phase = _phaseGenerator.getPhase();
+  setValue((phase < 256) ? phase : 511 - phase);
 }

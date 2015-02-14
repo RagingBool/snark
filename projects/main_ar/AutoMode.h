@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LedManager.h"
+#include "signal.h"
 
 class AutoMode {
   class AutoLed;
@@ -31,16 +32,27 @@ private:
   class AutoLed {
   private:
     LedManager& _ledManager;
+    int _updateThresholdMillis;
+    int _timeSinceUpdate;
       
   public:
-    AutoLed(LedManager& ledManager): _ledManager(ledManager) { }
-    
+    AutoLed(LedManager& ledManager):
+      _ledManager(ledManager),
+      _updateThresholdMillis(1),
+      _timeSinceUpdate(0) { }
+
     virtual ~AutoLed() { }
     
-    virtual void update(int dt) = 0;
+    void update(int dt);
       
   protected:
     LedManager& getLedManager() { return _ledManager; }
+    
+    int getupdateThresholdMillis() const { return _updateThresholdMillis; }
+    
+    void setUpdateThresholdMillis(int updateThresholdMillis) { _updateThresholdMillis = updateThresholdMillis; }
+    
+    virtual void updateInner(int dt) = 0;
   };
   
   class AutoMonoLed: public AutoLed {
@@ -48,7 +60,9 @@ private:
     int _ledId;
     
   public:
-    AutoMonoLed(LedManager& ledManager, int ledId): AutoLed(ledManager), _ledId(ledId) { }
+    AutoMonoLed(LedManager& ledManager, int ledId):
+      AutoLed(ledManager),
+      _ledId(ledId) { }
     
   protected:
     void setValue(int value) { getLedManager().setValue(_ledId, value); }
@@ -56,15 +70,11 @@ private:
   
   class FadingLed: public AutoMonoLed {
   private:
-    int _step;
-    int _phase;
-    
-    int _timeSinceUpdate;
+    PhaseGenerator _phaseGenerator;
     
   public:
-    FadingLed(LedManager& ledManager, int ledId, int step, int startingPhase = 0):
-      AutoMonoLed(ledManager, ledId), _step(step), _phase(startingPhase), _timeSinceUpdate(0) { }
+    FadingLed(LedManager& ledManager, int ledId, int period, int startingPhase = 0);
     
-    virtual void update(int dt);
+    virtual void updateInner(int dt);
   };
 };

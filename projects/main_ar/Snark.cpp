@@ -35,6 +35,6 @@ void Snark::init() {
 void Snark::loop() {
   _pAutoMode -> update();
   
-  delay(10);
+  delay(1);
 }
 

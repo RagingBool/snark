@@ -2,6 +2,7 @@
 
 #include "Outputs.h"
 #include "LedManager.h"
+#include "AutoMode.h"
 
 class Snark {
 private:
@@ -12,18 +13,13 @@ private:
 
   Outputs* _pOutputs;
   LedManager* _pLedManager;
-  int _f1;
-  int _f2;
-  int _f3;
-  int _f4;
+  AutoMode* _pAutoMode; 
   
 public:
   Snark();
+  ~Snark();
   
   void init();
   
   void loop();
-  
-private:
-  int func(int x);
 };

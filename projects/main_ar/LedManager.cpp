@@ -24,5 +24,7 @@ LedManager::LedManager(Outputs& outputs):
   _outputs(outputs) { }
 
 void LedManager::setValue(int id, int value) {
-  _outputs[id].setIntencity(pgm_read_byte(&gammaCorrection[value]));
+  int outputValue = _outputs[id].isPwm() ? pgm_read_byte(&gammaCorrection[value]) : value;
+  
+  _outputs[id].setValue(outputValue);
 }

@@ -9,5 +9,7 @@ private:
 public:
   LedManager(Outputs& outputs);
   
+  int getNumChannels() const { return _outputs.getNumOutputs(); } 
+  
   void setValue(int id, int value);
 };

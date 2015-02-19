@@ -10,9 +10,10 @@ Copyright 2015 Raging Bool (http://ragingbool.org)
 
 ## Release Notes
 ### Version 0.1
-
-* **Version 0.1.0.0**
-  * Basic LED control. Support for both PWM and digital outputs.
-  * Support for Arduino Uno
   
 * **Version 0.2.0.0** [IN DEVELOPMENT]
+  * Creating a primitive autonomous mode that is clock dependant.
+
+* **Version 0.1.0.0** [2015-02-13]
+  * Basic LED control. Support for both PWM and digital outputs.
+  * Support for Arduino Uno

@@ -26,24 +26,27 @@ void Lfo::update(uint16_t deltaMillis) {
   int phase = _phaseGenerator.getPhase();
   uint8_t triangle = (phase < 0x100) ? phase : 0x1FF - phase;
   
+  uint8_t newValue;
   switch(_lfoFunction) {
     case SAW_UP:
-      _value = phase >> 1;
+      newValue = phase >> 1;
       break;
     case SAW_DOWN:
-      _value = 0xFF - (phase >> 1);
+      newValue = 0xFF - (phase >> 1);
       break;
     case SQUARE:
-      _value = (phase < 0x100) ? 0 : 0xFF;
+      newValue = (phase < 0x100) ? 0 : 0xFF;
       break;
     case TRIANGLE:
-      _value = triangle;
+      newValue = triangle;
       break;
     case SIN_WAVE:
-      _value = pgm_read_byte(&sinWave[triangle]);
+      newValue = pgm_read_byte(&sinWave[triangle]);
       break;
     default:
-      _value = 0;
+      newValue = 0;
       break;
   }
+        
+  _outputSig.setValue(newValue);
 }

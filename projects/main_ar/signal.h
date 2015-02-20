@@ -4,6 +4,18 @@
 
 inline uint16_t periodToFrequency(uint16_t periodMillis) { return 0xFFFF / periodMillis; }
 
+class Signal {
+private:
+  uint16_t _value;
+  
+public:
+  Signal(): _value(0) { }
+  
+  uint16_t getValue() const { return 255; }
+  
+  void setValue(uint16_t newValue) { _value = newValue; }
+};
+
 class PhaseGenerator {
 private:
   int8_t _fixedPointBits;
@@ -43,10 +55,10 @@ private:
   LfoFunction _lfoFunction;
   uint8_t _initialPhase;
   uint16_t _frequency;
-  uint8_t _value;
+  Signal _outputSig;
   
 public:
-  Lfo(): _phaseGenerator(9), _value(0) { setLfoFunction(SAW_UP); setFrequency(1); setInitialPhase(0); }
+  Lfo(): _phaseGenerator(9) { setLfoFunction(SAW_UP); setFrequency(1); setInitialPhase(0); }
   
   void setLfoFunction(LfoFunction lfoFunction) { _lfoFunction = lfoFunction; }
   LfoFunction getLfoFunction() const { return _lfoFunction; }
@@ -59,7 +71,7 @@ public:
   
   void reset() { _phaseGenerator.setPhase(_initialPhase * 2); }
   
-  uint8_t getValue() const { return _value; }
+  const Signal& getOutputSig() const { return _outputSig; }
   
   void update(uint16_t deltaMillis);
 };

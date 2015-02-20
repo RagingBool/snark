@@ -99,5 +99,5 @@ AutoMode::FadingLed::FadingLed(LedManager& ledManager, int ledId, Lfo::LfoFuncti
 
 void AutoMode::FadingLed::updateInner(int dt) {
   _lfo.update(dt);
-  setValue(_lfo.getValue());
+  setValue(_lfo.getOutputSig().getValue());
 }

@@ -23,7 +23,7 @@ const uint8_t PROGMEM sinWave[] = {
 
 void Lfo::update(uint16_t deltaMillis) {
   _phaseGenerator.update(deltaMillis);
-  int phase = _phaseGenerator.getPhase();
+  uint16_t phase = _phaseGenerator.getPhase();
   uint8_t triangle = (phase < 0x100) ? phase : 0x1FF - phase;
   
   uint8_t newValue;
@@ -50,3 +50,54 @@ void Lfo::update(uint16_t deltaMillis) {
         
   _outputSig.setValue(newValue);
 }
+
+void HsiToRgb::update(uint16_t deltaMillis) {
+  uint16_t hue = _pHueInputSig != 0 ? _pHueInputSig -> getValue() : 0;
+  uint16_t saturation = _pSaturationInputSig != 0 ? _pSaturationInputSig -> getValue() : 0;
+  uint16_t intensity = _pIntensityInputSig != 0 ? _pIntensityInputSig -> getValue() : 0;
+  
+  hue &= 0xFF;
+  saturation = saturation < 0xFF ? saturation : 0xFF;
+  intensity = intensity < 0xFF ? intensity : 0xFF;
+  
+  uint16_t red;
+  uint16_t green;
+  uint16_t blue;
+  
+  HsiToRgb::hsiToRgb(hue, saturation, intensity, red, green, blue);
+  
+  _redOutputSig.setValue(red);
+  _greenOutputSig.setValue(green);
+  _blueOutputSig.setValue(blue);
+}
+
+void HsiToRgb::hsiToRgb(uint16_t hue, uint16_t saturation, uint16_t intensity, uint16_t& redOut, uint16_t& greenOut, uint16_t& blueOut) {
+  // Based on a post by Brian Neltner: http://blog.saikoled.com/post/43693602826/why-every-led-light-should-be-using-hsi
+  
+  float hueRadians = 3.14159 * hue / 128.f;
+  float normSaturation = saturation / 255.f;
+  float normIntensity = intensity / 255.f;
+  
+  float c = 255 * normIntensity / 3;
+  
+  // Math! Thanks in part to Kyle Miller.
+  if(hueRadians < 2.09439) {
+    float r = cos(hueRadians) / cos(1.047196667 - hueRadians);
+    redOut =   c * (1+normSaturation * r);
+    greenOut = c * (1+normSaturation * (1 - r));
+    blueOut =  c * (1-normSaturation);
+  } else if(hueRadians < 4.188787) {
+    float shiftedHue = hueRadians - 2.09439;
+    float r = cos(shiftedHue) / cos(1.047196667 - shiftedHue);
+    greenOut = c * (1 + normSaturation * r);
+    blueOut =  c * (1 + normSaturation * (1 - r));
+    redOut =   c * (1 - normSaturation);
+  } else {
+    float shiftedHue = hueRadians - 4.188787;
+    float r = cos(shiftedHue) / cos(1.047196667 - shiftedHue);
+    blueOut =  c * (1 + normSaturation * r);
+    redOut =   c * (1 + normSaturation * (1 - r));
+    greenOut = c * (1 - normSaturation);
+  }
+}
+

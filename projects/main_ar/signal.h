@@ -11,7 +11,7 @@ private:
 public:
   Signal(): _value(0) { }
   
-  uint16_t getValue() const { return 255; }
+  uint16_t getValue() const { return _value; }
   
   void setValue(uint16_t newValue) { _value = newValue; }
 };
@@ -71,8 +71,45 @@ public:
   
   void reset() { _phaseGenerator.setPhase(_initialPhase * 2); }
   
-  const Signal& getOutputSig() const { return _outputSig; }
+  Signal* getOutputSig() { return &_outputSig; }
+  
+  uint16_t getOutput() const { return _outputSig.getValue(); }
   
   void update(uint16_t deltaMillis);
+};
+
+class HsiToRgb {
+private:
+  Signal* _pHueInputSig;
+  Signal* _pSaturationInputSig;
+  Signal* _pIntensityInputSig;
+  
+  Signal _redOutputSig;
+  Signal _greenOutputSig;
+  Signal _blueOutputSig;
+
+public:
+  HsiToRgb(): _pHueInputSig(0), _pSaturationInputSig(0), _pIntensityInputSig(0) { }
+  
+  Signal* getHueInputSig() const { return _pHueInputSig; }
+  Signal* getSaturationInputSig() const { return _pSaturationInputSig; }
+  Signal* getIntensityInputSig() const { return _pIntensityInputSig; }
+  
+  void setHueInputSig(Signal* pSig) { _pHueInputSig = pSig; }
+  void setSaturationInputSig(Signal* pSig) { _pSaturationInputSig = pSig; }
+  void setIntensityInputSig(Signal* pSig) { _pIntensityInputSig = pSig; }
+  
+  Signal* getRedOutputSig() { return &_redOutputSig; }
+  Signal* getGreenOutputSig() { return &_greenOutputSig; }
+  Signal* getBlueOutputSig() { return &_blueOutputSig; }
+  
+  uint16_t getRedOutput() const { return _redOutputSig.getValue(); }
+  uint16_t getGreenOutput() const { return _greenOutputSig.getValue(); }
+  uint16_t getBlueOutput() const { return _blueOutputSig.getValue(); }
+  
+  void update(uint16_t deltaMillis);
+  
+private:
+  static void hsiToRgb(uint16_t hue, uint16_t saturation, uint16_t intensity, uint16_t& redOut, uint16_t& greenOut, uint16_t& blueOut);
 };
 

@@ -16,17 +16,18 @@ AutoMode::AutoMode(LedManager& ledManager):
 }
 
 void AutoMode::setupModes() {
-  // mono LEDs
-  addAutoLed(new FadingLed(_ledManager, 0, Lfo::SIN_WAVE, 1000, 7 * 1));
-  addAutoLed(new FadingLed(_ledManager, 1, Lfo::TRIANGLE, 500, 7 * 2));
-  addAutoLed(new FadingLed(_ledManager, 2, Lfo::SAW_DOWN, 2000, 7 * 3));
-  addAutoLed(new FadingLed(_ledManager, 8, Lfo::SQUARE, 700, 64));
-  addAutoLed(new FadingLed(_ledManager, 7, Lfo::SQUARE, 700, 128));
-  addAutoLed(new FadingLed(_ledManager, 6, Lfo::SQUARE, 700, 192));
-
   // RGB LEDs
-  addAutoLed(new CyclingLed(_ledManager, 3, 30000));
-  addAutoLed(new CyclingLed(_ledManager, 9, 2000));
+  addAutoLed(new CyclingLed(_ledManager, 0, 10000));
+  addAutoLed(new CyclingLed(_ledManager, 3, 20000));
+
+  // mono LEDs
+  int t = 800;
+  addAutoLed(new FadingLed(_ledManager, 6, Lfo::SQUARE, t, 0));
+  addAutoLed(new FadingLed(_ledManager, 7, Lfo::SQUARE, t, 43));
+  addAutoLed(new FadingLed(_ledManager, 8, Lfo::SQUARE, t, 85));
+  addAutoLed(new FadingLed(_ledManager, 9, Lfo::SQUARE, t, 128));
+  addAutoLed(new FadingLed(_ledManager, 10, Lfo::SQUARE, t, 171));
+  addAutoLed(new FadingLed(_ledManager, 11, Lfo::SQUARE, t, 213));
 }
 
 AutoMode::~AutoMode() {

@@ -25,12 +25,8 @@ void AutoMode::setupModes() {
   addAutoLed(new FadingLed(_ledManager, 6, Lfo::SQUARE, 700, 192));
 
   // RGB LEDs
-  addAutoLed(new FadingLed(_ledManager, 3, Lfo::SIN_WAVE, 8000, 7 * 1));
-  addAutoLed(new FadingLed(_ledManager, 4, Lfo::SIN_WAVE, 3000, 7 * 2));
-  addAutoLed(new FadingLed(_ledManager, 5, Lfo::SIN_WAVE, 5000, 7 * 3));
-  addAutoLed(new FadingLed(_ledManager, 9, Lfo::SQUARE, 2000, 0));
-  addAutoLed(new FadingLed(_ledManager, 10, Lfo::SQUARE, 4000, 0));
-  addAutoLed(new FadingLed(_ledManager, 11, Lfo::SQUARE, 8000, 0));
+  addAutoLed(new CyclingLed(_ledManager, 3, 30000));
+  addAutoLed(new CyclingLed(_ledManager, 9, 2000));
 }
 
 AutoMode::~AutoMode() {
@@ -99,5 +95,31 @@ AutoMode::FadingLed::FadingLed(LedManager& ledManager, int ledId, Lfo::LfoFuncti
 
 void AutoMode::FadingLed::updateInner(int dt) {
   _lfo.update(dt);
-  setValue(_lfo.getValue());
+  setValue(_lfo.getOutput());
+}
+
+// class CyclingLed
+
+AutoMode::CyclingLed::CyclingLed(LedManager& ledManager, int ledId, int huePeriod, int initialHue):
+  AutoRgbLed(ledManager, ledId) {
+  
+  setUpdateThresholdMillis(10);
+  
+  _hueLfo.setLfoFunction(Lfo::SAW_DOWN);
+  _hueLfo.setFrequency(periodToFrequency(huePeriod));
+  _hueLfo.setInitialPhase(initialHue);
+  _hueLfo.reset();
+  
+  _saturationSig.setValue(255);
+  _intensitySig.setValue(255);
+  
+  _hsiToRgb.setHueInputSig(_hueLfo.getOutputSig());
+  _hsiToRgb.setSaturationInputSig(&_saturationSig);
+  _hsiToRgb.setIntensityInputSig(&_intensitySig);
+}
+
+void AutoMode::CyclingLed::updateInner(int dt) {
+  _hueLfo.update(dt);
+  _hsiToRgb.update(dt);
+  setValue(_hsiToRgb.getRedOutput(), _hsiToRgb.getGreenOutput(), _hsiToRgb.getBlueOutput());
 }
